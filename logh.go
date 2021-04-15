@@ -48,14 +48,30 @@ func Highlight(in io.Reader, out io.Writer, matches ...string) {
 
 		// See if matches with any regexes
 		matched := false
+
+		// lineColors = make([]int, len(line))
+		// for i := range lineColors {
+		// 	lineColors[i] = -1
+		// }
 		for i, rg := range regexes {
-			if rg.MatchString(line) {
-				// Matches! Highlight and output
-				fmt.Fprintf(out, "%s\n", colors[i].Sprint(line))
+			indexes := rg.FindAllStringIndex(line, -1)
+
+			for _, match := range indexes {
+				start, end := match[0], match[1]
+				fmt.Fprintf(out, "%s%s%s\n", line[:start], colors[i].Sprint(line[start:end]), line[end:])
 
 				matched = true
 				break
 			}
+
+			// TODO: Add config to highlight the whole line?
+			// if rg.MatchString(line) {
+			// 	// Matches! Highlight and output
+			// 	fmt.Fprintf(out, "%s\n", colors[i].Sprint(line))
+
+			// 	matched = true
+			// 	break
+			// }
 		}
 
 		// No matches, print with default color

@@ -1,5 +1,7 @@
 package main
 
+// go build -o logh cli/main.go
+
 import (
 	"os"
 

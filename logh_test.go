@@ -30,6 +30,7 @@ func TestLogHighlight(t *testing.T) {
 		assertStringEqual(t, got.String(), want)
 	})
 
+	// TODO: Add config for this? The user can pass .*word.*, which makes sense...
 	t.Run("highlight all lines containing the word", func(t *testing.T) {
 		input := strings.NewReader("line1\n" +
 			"line2\n" +
@@ -44,7 +45,7 @@ func TestLogHighlight(t *testing.T) {
 			color.RedString("line2") + "\n" // An extra \n there
 
 		got := &bytes.Buffer{}
-		logh.Highlight(input, got, "line2")
+		logh.Highlight(input, got, ".*line2.*")
 		assertStringEqual(t, got.String(), want)
 	})
 
@@ -82,6 +83,38 @@ func TestLogHighlight(t *testing.T) {
 
 		got := &bytes.Buffer{}
 		logh.Highlight(input, got, strings.Split(chars, "")...)
+		assertStringEqual(t, got.String(), want)
+	})
+
+	t.Run("allow configuration", func(t *testing.T) {
+		t.Error("TODO")
+	})
+
+	t.Run("show debug output", func(t *testing.T) {
+		t.Error("TODO")
+	})
+
+	t.Run("should warn if there are no expressions", func(t *testing.T) {
+		t.Error("TODO")
+	})
+
+	t.Run("allow highlighting matches only, multiple expressions", func(t *testing.T) {
+		input := strings.NewReader("line1\nline2\nline3\n")
+		want := "line1\n" +
+			"line" + color.RedString("2") + "\n" +
+			color.GreenString("line3") + "\n"
+
+		got := &bytes.Buffer{}
+		logh.Highlight(input, got, "2", "line3")
+		assertStringEqual(t, got.String(), want)
+	})
+
+	t.Run("allow highlighting matches only, multiple expressions on the same line", func(t *testing.T) {
+		input := strings.NewReader("col1 col2 col3\n")
+		want := "col1 col" + color.RedString("2") + " " + color.GreenString("col3") + "\n"
+
+		got := &bytes.Buffer{}
+		logh.Highlight(input, got, "2", "line3")
 		assertStringEqual(t, got.String(), want)
 	})
 }
