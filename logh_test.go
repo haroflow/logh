@@ -114,7 +114,7 @@ func TestLogHighlight(t *testing.T) {
 		want := "col1 col" + color.RedString("2") + " " + color.GreenString("col3") + "\n"
 
 		got := &bytes.Buffer{}
-		logh.Highlight(input, got, "2", "line3")
+		logh.Highlight(input, got, "2", "col3")
 		assertStringEqual(t, got.String(), want)
 	})
 }

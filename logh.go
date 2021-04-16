@@ -49,20 +49,31 @@ func Highlight(in io.Reader, out io.Writer, matches ...string) {
 		// See if matches with any regexes
 		matched := false
 
-		// lineColors = make([]int, len(line))
-		// for i := range lineColors {
-		// 	lineColors[i] = -1
-		// }
+		// TODO refactor this new implementation
+		lineColors := make([]int, len(line))
+		for i := range lineColors {
+			lineColors[i] = -1
+		}
+
 		for i, rg := range regexes {
 			indexes := rg.FindAllStringIndex(line, -1)
 
 			for _, match := range indexes {
 				start, end := match[0], match[1]
-				fmt.Fprintf(out, "%s%s%s\n", line[:start], colors[i].Sprint(line[start:end]), line[end:])
+				for j := start; j < end; j++ {
+					lineColors[j] = i
+				}
 
 				matched = true
-				break
 			}
+
+			// for _, match := range indexes {
+			// 	start, end := match[0], match[1]
+			// 	fmt.Fprintf(out, "%s%s%s\n", line[:start], colors[i].Sprint(line[start:end]), line[end:])
+
+			// 	matched = true
+			// 	break
+			// }
 
 			// TODO: Add config to highlight the whole line?
 			// if rg.MatchString(line) {
@@ -72,6 +83,35 @@ func Highlight(in io.Reader, out io.Writer, matches ...string) {
 			// 	matched = true
 			// 	break
 			// }
+		}
+
+		if matched {
+			lastColorIdx := -1
+			newLine := ""
+			buff := ""
+			for i, ch := range line {
+				if lineColors[i] != lastColorIdx {
+					if lastColorIdx != -1 {
+						lastColor := colors[lastColorIdx]
+						newLine += lastColor.Sprint(buff)
+					} else {
+						newLine += buff
+					}
+					buff = ""
+
+					lastColorIdx = lineColors[i]
+				}
+				buff += string(ch)
+			}
+			if buff != "" {
+				if lastColorIdx != -1 {
+					lastColor := colors[lastColorIdx]
+					newLine += lastColor.Sprint(buff)
+				} else {
+					newLine += buff
+				}
+			}
+			fmt.Fprintf(out, "%s\n", newLine)
 		}
 
 		// No matches, print with default color
