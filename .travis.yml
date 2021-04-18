@@ -7,3 +7,19 @@ os:
   - linux
   - osx
   - windows
+
+before_deploy:
+  - mv logh "logh-$TRAVIS_TAG-$TRAVIS_OS_NAME"
+  
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: QdoWOech2ZevKJZjymdBeInsmVcERAwYEatCGivHkns9KMlCbXpiO0UZJ12Bi6rQOvbhwqw89fKDmQDMpyBvIROvXCjaaXyZSlyAHZ7Km6j2elDcSB6+yaRmfdz2+N2lyYlkYhOWpLti5Vtqci56faDHeGPmi0Y9om/MlhmfUwrGXguo6LRHEesIcWGE3TgqRU10K/PmAfAevsN/nsiEWJpbAMNvF/YeWBHkLw+0XrZOJ9/cKb2M8qtrYlA7gjQ+wJXmqDGZwKl4/4Zf5brGNvCr5qAOf8VFeJVokE4NHoiO3bpIWdSBHCVFpGS9pd238HTMQn8o3pp7ZdofLn/559PLIJbxE757sg+HSEb/MMaVDI+N0JkKJHEgnOkdi78dsWBm2y5RmmQ6RWmZv5gZ4myDVj/oCmxqXcqzmiUZdIUSpKbvkM/h1kqZeuFqldfJVvw14iKMDpAtbyBSiyW0wvCGHH1h+QBnwAMXMkufQHVlSpnJSw4/zQCsGPEHt3N1CKOKX3bSTHQoQb6wZE6avfOJHiKNdMVgcAhkR64Y8Qmy/4uppn8/P1c25PBQokJluCfig6zf33+58PtU/wM829Bj18yyUg7kHZNXzo84e4gHrFEzbqxcaPma//LObpMTwnk/fn/7kaaO9TKG5+UStoRMHy6aL/RQSHThsypao1E=
+  file_glob: true
+  file:
+    - logh-*
+  on:
+    repo: haroflow/logh
+    tags: true
+    all_branches: true
