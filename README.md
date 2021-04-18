@@ -21,9 +21,15 @@ Pass regular expressions as arguments to highlight the text. Each argument will 
 
 Examples:
 ```
+# View help
+logh
+
 # Highlights "GET" with red, "POST" with green
 tail -f /var/log/httpd/access.log | logh GET POST
 
 # Highlights the whole line containing "word"
 cat textfile.txt | logh '.*word.*'
+
+# Ignore case. Matches get, GET, Get, etc.
+cat textfile.txt | logh -i get
 ```
