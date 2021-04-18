@@ -26,7 +26,7 @@ func TestLogHighlight(t *testing.T) {
 			"line2\n" // An extra \n there
 
 		got := &bytes.Buffer{}
-		logh.Highlight(input, got, "")
+		logh.Highlight(input, got, logh.HighlightConfig{}, "")
 		assertStringEqual(t, got.String(), want)
 	})
 
@@ -45,7 +45,7 @@ func TestLogHighlight(t *testing.T) {
 			color.RedString("line2") + "\n" // An extra \n there
 
 		got := &bytes.Buffer{}
-		logh.Highlight(input, got, ".*line2.*")
+		logh.Highlight(input, got, logh.HighlightConfig{}, ".*line2.*")
 		assertStringEqual(t, got.String(), want)
 	})
 
@@ -63,7 +63,7 @@ func TestLogHighlight(t *testing.T) {
 			color.YellowString("e") + "\n" // An extra \n there
 
 		got := &bytes.Buffer{}
-		logh.Highlight(input, got, "b", "c", "d", "e")
+		logh.Highlight(input, got, logh.HighlightConfig{}, "b", "c", "d", "e")
 		assertStringEqual(t, got.String(), want)
 	})
 
@@ -82,12 +82,22 @@ func TestLogHighlight(t *testing.T) {
 		input := strings.NewReader(inputStr)
 
 		got := &bytes.Buffer{}
-		logh.Highlight(input, got, strings.Split(chars, "")...)
+		logh.Highlight(input, got, logh.HighlightConfig{}, strings.Split(chars, "")...)
 		assertStringEqual(t, got.String(), want)
 	})
 
-	t.Run("allow configuration", func(t *testing.T) {
-		t.Error("TODO")
+	t.Run("ignore case", func(t *testing.T) {
+		input := strings.NewReader("line1\nLINE2\nLiNe3\n")
+		want := color.RedString("line") + "1\n" +
+			color.RedString("LINE") + "2\n" +
+			color.RedString("LiNe") + "3\n"
+
+		got := &bytes.Buffer{}
+		config := logh.HighlightConfig{
+			IgnoreCase: true,
+		}
+		logh.Highlight(input, got, config, "line")
+		assertStringEqual(t, got.String(), want)
 	})
 
 	t.Run("show debug output", func(t *testing.T) {
@@ -106,7 +116,7 @@ func TestLogHighlight(t *testing.T) {
 			color.BlueString("fourth") + " line\n"
 
 		got := &bytes.Buffer{}
-		logh.Highlight(input, got, "2", "line3", "fourth")
+		logh.Highlight(input, got, logh.HighlightConfig{}, "2", "line3", "fourth")
 		assertStringEqual(t, got.String(), want)
 	})
 
@@ -115,7 +125,7 @@ func TestLogHighlight(t *testing.T) {
 		want := "col1 col" + color.RedString("2") + " " + color.GreenString("col3") + "\n"
 
 		got := &bytes.Buffer{}
-		logh.Highlight(input, got, "2", "col3")
+		logh.Highlight(input, got, logh.HighlightConfig{}, "2", "col3")
 		assertStringEqual(t, got.String(), want)
 	})
 }

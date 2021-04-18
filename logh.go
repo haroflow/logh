@@ -22,7 +22,11 @@ var Colors = []color.Attribute{
 	color.FgHiCyan,
 }
 
-func Highlight(in io.Reader, out io.Writer, expressions ...string) {
+type HighlightConfig struct {
+	IgnoreCase bool
+}
+
+func Highlight(in io.Reader, out io.Writer, config HighlightConfig, expressions ...string) {
 	// Instantiates all the colors
 	colors := make([]*color.Color, len(expressions))
 	// Create a regexp for each expression
@@ -30,6 +34,9 @@ func Highlight(in io.Reader, out io.Writer, expressions ...string) {
 	for i, expr := range expressions {
 		if expr == "" { // if expr is empty, we shouldn't really match with anything
 			expr = "^$"
+		}
+		if config.IgnoreCase {
+			expr = "(?i)" + expr
 		}
 
 		rg, _ := regexp.Compile(expr) // TODO handle error
