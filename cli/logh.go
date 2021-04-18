@@ -1,7 +1,7 @@
 package main
 
-// go build -o logh.exe cli/main.go
-// set GOOS=linux; set GOARCH=amd64; go build -o logh cli/main.go
+// go build cli/logh.go
+// set GOOS=linux; set GOARCH=amd64; go build cli/logh.go
 
 import (
 	"os"
