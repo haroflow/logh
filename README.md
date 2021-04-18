@@ -1,4 +1,4 @@
-# Log Highlighter
+# Log Highlighter [![Build Status](https://travis-ci.com/haroflow/logh.svg?branch=main)](https://travis-ci.com/haroflow/logh)
 
 This tool colorizes the output based on regular expressions, making it easier to follow logs at a glance.
 ![logh](https://user-images.githubusercontent.com/4776931/115137317-d8edc180-9ffb-11eb-8542-c84260cafbc0.png)
