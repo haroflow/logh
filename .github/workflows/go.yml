@@ -23,3 +23,10 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+
+    - name: Create a Release
+      uses: elgohr/Github-Release-Action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      with:
+        args: MyReleaseMessage
