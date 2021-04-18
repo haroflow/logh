@@ -8,9 +8,16 @@ os:
   - osx
   - windows
 
+script:
+  - go build cli/logh.go
+  - go test -race -coverprofile=coverage.txt -covermode=atomic
+
 before_deploy:
   - mv logh "logh-$TRAVIS_TAG-$TRAVIS_OS_NAME"
-  
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
 deploy:
   provider: releases
   skip_cleanup: true
