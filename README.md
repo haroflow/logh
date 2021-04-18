@@ -1,4 +1,4 @@
-# Log Highlighter [![Build Status](https://travis-ci.com/haroflow/logh.svg?branch=main)](https://travis-ci.com/haroflow/logh) [![codecov](https://codecov.io/gh/haroflow/logh/branch/main/graph/badge.svg?token=9IFRLQWKUS)](https://codecov.io/gh/haroflow/logh)
+# Log Highlighter [![Go](https://github.com/haroflow/logh/actions/workflows/go.yml/badge.svg)](https://github.com/haroflow/logh/actions/workflows/go.yml) [![codecov](https://codecov.io/gh/haroflow/logh/branch/main/graph/badge.svg?token=9IFRLQWKUS)](https://codecov.io/gh/haroflow/logh)
 
 
 This tool colorizes the output based on regular expressions, making it easier to follow logs at a glance.
