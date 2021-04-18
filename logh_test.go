@@ -99,13 +99,14 @@ func TestLogHighlight(t *testing.T) {
 	})
 
 	t.Run("allow highlighting matches only, multiple expressions", func(t *testing.T) {
-		input := strings.NewReader("line1\nline2\nline3\n")
+		input := strings.NewReader("line1\nline2\nline3\nfourth line\n")
 		want := "line1\n" +
 			"line" + color.RedString("2") + "\n" +
-			color.GreenString("line3") + "\n"
+			color.GreenString("line3") + "\n" +
+			color.BlueString("fourth") + " line\n"
 
 		got := &bytes.Buffer{}
-		logh.Highlight(input, got, "2", "line3")
+		logh.Highlight(input, got, "2", "line3", "fourth")
 		assertStringEqual(t, got.String(), want)
 	})
 
