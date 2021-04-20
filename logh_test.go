@@ -121,6 +121,17 @@ func TestLogHighlight(t *testing.T) {
 		assertStringEqual(t, got.String(), want)
 	})
 
+	t.Run("should error when passed an invalid regular expression", func(t *testing.T) {
+		input := strings.NewReader("abc\n")
+
+		got := &bytes.Buffer{}
+		err := logh.Highlight(input, got, logh.HighlightConfig{}, "*test")
+
+		if err == nil {
+			t.Errorf("expected an error, got %s", err)
+		}
+	})
+
 	// t.Run("show debug output", func(t *testing.T) {
 	// 	t.Error("TODO")
 	// })

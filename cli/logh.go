@@ -28,5 +28,9 @@ func main() {
 		IgnoreCase: *ignoreCase,
 	}
 	matches := flag.Args()
-	logh.Highlight(os.Stdin, os.Stdout, config, matches...)
+
+	if err := logh.Highlight(os.Stdin, os.Stdout, config, matches...); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }

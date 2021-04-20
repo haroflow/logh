@@ -26,7 +26,7 @@ type HighlightConfig struct {
 	IgnoreCase bool
 }
 
-func Highlight(in io.Reader, out io.Writer, config HighlightConfig, expressions ...string) {
+func Highlight(in io.Reader, out io.Writer, config HighlightConfig, expressions ...string) error {
 	// Instantiates all the colors
 	colors := make([]*color.Color, len(expressions))
 	// Create a regexp for each expression
@@ -39,7 +39,10 @@ func Highlight(in io.Reader, out io.Writer, config HighlightConfig, expressions 
 			expr = "(?i)" + expr
 		}
 
-		rg, _ := regexp.Compile(expr) // TODO handle error
+		rg, err := regexp.Compile(expr)
+		if err != nil {
+			return fmt.Errorf("error compiling regular expression %s: %s", expr, err)
+		}
 		regexes[i] = rg
 
 		c := Colors[i%len(Colors)]
@@ -107,4 +110,6 @@ func Highlight(in io.Reader, out io.Writer, config HighlightConfig, expressions 
 			fmt.Fprintf(out, "%s\n", scanner.Text())
 		}
 	}
+
+	return nil
 }
